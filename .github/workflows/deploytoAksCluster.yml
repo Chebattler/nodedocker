@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: chekube.azurecr.io
+        username: ${{ secrets.acr_chekube_username }}
+        password: ${{ secrets.acr_chekube_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t chekube.azurecr.io/t5:${{ github.sha }} --label dockerfile-path=Dockerfile
+        docker push chekube.azurecr.io/t5:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_t5_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep devopsapp | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace devopsapp`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: devopsapp
+        container-registry-url: chekube.azurecr.io
+        container-registry-username: ${{ secrets.acr_chekube_username }}
+        container-registry-password: ${{ secrets.acr_chekube_password }}
+        secret-name: t5dockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: devopsapp
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          chekube.azurecr.io/t5:${{ github.sha }}
+        imagepullsecrets: |
+          t5dockerauth
