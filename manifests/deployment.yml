@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: g2pc
+  name: g1pc
 spec:
   accessModes:
     - ReadWriteMany
@@ -13,20 +13,20 @@ spec:
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "t5-1c0r"
+  name: "t5-1c0e"
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: "t5-1c0r"
+      app: "t5-1c0e"
   template:
     metadata:
       labels:
-        app: "t5-1c0r"
+        app: "t5-1c0e"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: "t5-1c0r"
+        - name: "t5-1c0e"
           image: "chekube.azurecr.io/t5"
           ports:
           - containerPort: 80
@@ -36,4 +36,4 @@ spec:
       volumes:
           - name: volume
             persistentVolumeClaim:
-              claimName: g2pc      
+              claimName: g1pc      
