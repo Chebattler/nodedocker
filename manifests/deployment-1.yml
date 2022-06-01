@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: rk3
+  name: k2pc
 spec:
   accessModes:
     - ReadWriteMany
@@ -35,4 +35,4 @@ spec:
       volumes:
           - name: volume
             persistentVolumeClaim:
-              claimName: rk3      
+              claimName: k2pc      
