@@ -13,20 +13,20 @@ spec:
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "t5-1c0e"
+  name: "t5-1c0r"
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: "t5-1c0e"
+      app: "t5-1c0r"
   template:
     metadata:
       labels:
-        app: "t5-1c0e"
+        app: "t5-1c0r"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: "t5-1c0e"
+        - name: "t5-1c0r"
           image: "chekube.azurecr.io/t5"
           ports:
           - containerPort: 80
