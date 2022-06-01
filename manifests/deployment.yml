@@ -32,7 +32,7 @@ spec:
           - containerPort: 80
           volumeMounts:
           - name: volume
-            mountPath: "/use/src/app"
+            mountPath: "/usr/src/app"
       volumes:
           - name: volume
             persistentVolumeClaim:
