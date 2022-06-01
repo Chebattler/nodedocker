@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rk3
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: my-azurefile
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion : apps/v1
 kind: Deployment
 metadata:
@@ -17,3 +29,10 @@ spec:
           image: "chekube.azurecr.io/t5"
           ports:
           - containerPort: 80
+          volumeMounts:
+          - name: volume
+            mountPath: "/usr/src/app"
+      volumes:
+          - name: volume
+            persistentVolumeClaim:
+              claimName: rk3      
