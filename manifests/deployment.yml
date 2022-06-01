@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: g1pc
+  name: g2pc
 spec:
   accessModes:
     - ReadWriteMany
@@ -36,4 +36,4 @@ spec:
       volumes:
           - name: volume
             persistentVolumeClaim:
-              claimName: g1pc      
+              claimName: g2pc      
