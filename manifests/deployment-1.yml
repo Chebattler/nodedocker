@@ -13,19 +13,19 @@ spec:
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "t5-7325"
+  name: "kacper"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "t5-7325"
+      app: "kacper"
   template:
     metadata:
       labels:
-        app: "t5-7325"
+        app: "kacper"
     spec:
       containers:
-        - name: "t5-7325"
+        - name: "kacper"
           image: "chekube.azurecr.io/t5"
           ports:
           - containerPort: 80
