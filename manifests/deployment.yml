@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: g1pc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: my-azurefile
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion : apps/v1
 kind: Deployment
 metadata:
@@ -12,8 +24,16 @@ spec:
       labels:
         app: "t5-1c0e"
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
         - name: "t5-1c0e"
           image: "chekube.azurecr.io/t5"
           ports:
           - containerPort: 80
+          volumeMounts:
+          - name: volume
+            mountPath: "/use/src/app"
+      volumes:
+          - name: volume
+            persistentVolumeClaim:
+              claimName: g1pc      
