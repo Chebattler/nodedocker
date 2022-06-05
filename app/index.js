@@ -13,14 +13,20 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 const dbName = '234';
-const client = new MongoClient('mongodb://root:shantanubansal@20.126.215.234:27017/234/?authSource=admin&readPreference=primaryPreferred&appname=MongoDB');
-
+const client = new MongoClient('mongodb://root:shantanubansal@mongo-0.mongo.mongodb-repl-system.svc.cluster.local:27017,mongo-1.mongo.mongodb-repl-system.svc.cluster.local:27017/?replicaSet=rs0&authSource=admin&readPreference=primaryPreferred');
+var isconnected = "NOT CONNECTED";
 // Connect to MongoDB server, run the findDocuments function and close the connection.
 client.connect(function(err) {
 
-    if(err) console.log(err);
+    if(err) console.log(err) 
+    
+    else
+    {
     console.log('Connected successfully to MongoDB server on port 27017');
     dbo = client.db(dbName);
+    isconnected = "Connected!"; 
+
+    }
 
 
 });
@@ -29,7 +35,7 @@ client.connect(function(err) {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
+  res.status(200).send(isconnected);
 });
 
 var listener = app.listen(process.env.PORT || 80, function() {
